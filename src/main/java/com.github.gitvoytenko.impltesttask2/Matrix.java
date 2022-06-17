@@ -4,25 +4,25 @@ import static java.lang.Math.min;
 import static java.util.Arrays.fill;
 
 public class Matrix {
-    private final int INFINITY = 10001;
-    private final int[][] cost;  // adjacency matrix
+    private final int MAX_AMOUNT = 9999;
+    private final int[][] costs;  // adjacency matrix
 
     /**
      * @param vertices is the number of vertices in the graph
      */
     public Matrix(int vertices) {
-        cost = new int[vertices][vertices];
+        costs = new int[vertices][vertices];
     }
 
     /**
-     * Set the weight between the neighbors [Cities]
+     * Set the cost between the neighbors [Cities]
      *
      * @param i point and point j that create an edge [path]
      * @param j point and point i that create an edge [path]
-     * @param weight of the edges - non-negative number
+     * @param weight [cost] of the edges [path] - non-negative number
      */
     public void setEdge(int i, int j, int weight) {
-        cost[i][j] = weight;
+        costs[i][j] = weight;
     }
 
     /**
@@ -30,16 +30,16 @@ public class Matrix {
      *
      * @param i point and point j that create an edge [path]
      * @param j point and point i that create an edge [path]
-     * @return 0 if i and j are the same, infinity, if there is no connection between the edges of the edges
+     * @return 0 if i and j are the same, MAX_AMOUNT if there is no connection between the edges [paths]
      */
     private int getCost(int i, int j) {
         if (i == j) {
             return 0;
         }
-        if (cost[i][j] == 0) {
-            return INFINITY;
+        if (costs[i][j] == 0) {
+            return MAX_AMOUNT;
         }
-        return cost[i][j];
+        return costs[i][j];
     }
 
     /**
@@ -50,15 +50,15 @@ public class Matrix {
      * @return the index of the smallest element of distances, ignoring those in visited.
      */
     private int getUntaggedVertex(Integer[] result, boolean[] visited) {
-        int best = -1;
+        int markingIndex = -1;
         // sort out the vertices
-        for (int i = 0; i < cost.length; i++) {
+        for (int i = 0; i < costs.length; i++) {
             // select the closest untagged vertex
-            if (!visited[i] && ((best < 0) || (result[i] < result[best]))) {
-                best = i;
+            if (!visited[i] && ((markingIndex < 0) || (result[i] < result[markingIndex]))) {
+                markingIndex = i;
             }
         }
-        return best;
+        return markingIndex;
     }
 
     /**
@@ -68,15 +68,15 @@ public class Matrix {
      * @return an array of distances between cities
      */
     public Integer[] waysOfMinimumCostBetweenPairsOfCities(int startIndex) {
-        boolean[] visited = new boolean[cost.length];// visit the city
-        Integer[] result = new Integer[cost.length]; // distance array
-        fill(result, INFINITY);                      // set the distance to all vertices INFINITY
-        result[startIndex] = startIndex;             // initial vertex
+        boolean[] visited = new boolean[costs.length];  // visit the city
+        Integer[] result = new Integer[costs.length];   // distance array
+        fill(result, MAX_AMOUNT);                           // set the distance to all vertices INFINITY
+        result[startIndex] = startIndex;                // initial vertex
 
-        for (int[] ignored : cost) {
+        for (int[] ignored : costs) {
             int cityInd = getUntaggedVertex(result, visited);
             visited[cityInd] = true;
-            for (int i = 0; i < cost.length; i++) {
+            for (int i = 0; i < costs.length; i++) {
                 result[i] = min(result[i], result[cityInd] + getCost(cityInd, i));
             }
         }
