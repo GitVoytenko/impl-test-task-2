@@ -51,8 +51,10 @@ public class Matrix {
      */
     private int getUntaggedVertex(Integer[] result, boolean[] visited) {
         int best = -1;
-        for (int i = 0; i < cost.length; i++) { // sort out the vertices
-            if (!visited[i] && ((best < 0) || (result[i] < result[best]))) { // select the closest untagged vertex
+        // sort out the vertices
+        for (int i = 0; i < cost.length; i++) {
+            // select the closest untagged vertex
+            if (!visited[i] && ((best < 0) || (result[i] < result[best]))) {
                 best = i;
             }
         }
@@ -71,11 +73,11 @@ public class Matrix {
         fill(result, INFINITY);                      // set the distance to all vertices INFINITY
         result[startIndex] = startIndex;             // initial vertex
 
-        for (int[] aCost : cost) {
-            int city = getUntaggedVertex(result, visited);
-            visited[city] = true;
-            for (int j = 0; j < cost.length; j++) {
-                result[j] = min(result[j], result[city] + getCost(city, j));
+        for (int[] ignored : cost) {
+            int cityInd = getUntaggedVertex(result, visited);
+            visited[cityInd] = true;
+            for (int i = 0; i < cost.length; i++) {
+                result[i] = min(result[i], result[cityInd] + getCost(cityInd, i));
             }
         }
         return result;
