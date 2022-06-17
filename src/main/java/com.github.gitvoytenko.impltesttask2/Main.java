@@ -13,10 +13,13 @@ public class Main {
     public static void main(String[] args) throws IOException {
 
         File path = new File("src/main/resources/test_data.txt");
+        // create an object to read data from the file
         BufferedReader br = new BufferedReader(new FileReader(path.getAbsolutePath()));
+        // reading the first line of the file (the number of tests)
         String line = br.readLine();
         int numberOfTests = Integer.parseInt(line);
 
+        // test cycle (determining the number of cities)
         for (int testIndex = 0; testIndex < numberOfTests; testIndex++) {
             String[] cities = new String[MAX_AMOUNT_OF_CITIES];
             line = br.readLine();
@@ -24,6 +27,7 @@ public class Main {
             int matrixSize = countCities + 1;
             Matrix matrix = new Matrix(matrixSize);
 
+            // find out the name of the city and the number of neighbors and enter it into the array
             for (int cityIndex = 0; cityIndex < countCities; cityIndex++) {
                 line = br.readLine();
                 String cityName = line;
@@ -31,6 +35,7 @@ public class Main {
                 line = br.readLine();
                 int numberOfNeighbors = Integer.parseInt(line);
 
+                // reading the neighbor's index and the price of the road to it and entering it into the adjacency matrix
                 for (int neighborIndex = 0; neighborIndex < numberOfNeighbors; neighborIndex++) {
                     line = br.readLine();
                     String[] splitLine = line.split(" ");
@@ -40,6 +45,7 @@ public class Main {
                 }
             }
 
+            // creating a list and transfer values from the array of city names into it
             List<String> list = new ArrayList<>();
 
             for (String s : cities) {
@@ -50,9 +56,11 @@ public class Main {
 
             cities = list.toArray(new String[0]);
 
+            // reading the number of paths found
             line = br.readLine();
             int routesToFind = Integer.parseInt(line);
 
+            // finding out the cities to find the minimum fare between them
             for (int routesIndex = 0; routesIndex < routesToFind; routesIndex++) {
                 line = br.readLine();
                 String[] cityNames = line.split(" ");

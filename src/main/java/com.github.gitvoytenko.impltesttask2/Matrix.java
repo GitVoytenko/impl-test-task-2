@@ -64,13 +64,13 @@ public class Matrix {
     /**
      * Returns the ways of minimum cost between pairs of cities
      *
-     * @param startIndex Initial vertex
+     * @param startIndex initial vertex
      * @return an array of distances between cities
      */
     public Integer[] waysOfMinimumCostBetweenPairsOfCities(int startIndex) {
         boolean[] visited = new boolean[costs.length];  // visit the city
         Integer[] result = new Integer[costs.length];   // distance array
-        fill(result, MAX_AMOUNT);                           // set the distance to all vertices INFINITY
+        fill(result, MAX_AMOUNT);                       // set the distance to all vertices MAX_AMOUNT
         result[startIndex] = startIndex;                // initial vertex
 
         for (int[] ignored : costs) {
